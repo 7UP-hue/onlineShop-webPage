@@ -1,3 +1,10 @@
+/*
+ * @Descripttion: 
+ * @Author: 刘晴
+ * @Date: 2022-05-31 10:34:09
+ * @LastEditors: 刘晴
+ * @LastEditTime: 2022-05-31 10:37:02
+ */
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import AutoImport from 'unplugin-auto-import/vite'
@@ -18,7 +25,7 @@ export default defineConfig({
     }),
   ],
   server: {
-    port: 8088,
+    port: 8043,
   },
   resolve:{
     // 起别名

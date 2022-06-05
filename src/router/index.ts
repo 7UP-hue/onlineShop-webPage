@@ -1,5 +1,18 @@
+/*
+ * @Descripttion: 
+ * @Author: 刘晴
+ * @Date: 2022-05-31 10:34:09
+ * @LastEditors: 刘晴
+ * @LastEditTime: 2022-06-04 10:38:28
+ */
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import HelloWorld from '../components/HelloWorld.vue'
+import { getToken } from '@/utils/cookies'
+import home from '@/pages/index.vue'
+import login from '@/pages/login.vue'
+import register from '@/pages/register.vue'
+import myOrder from '@/pages/myOrder.vue'
+import editMsg from '@/pages/editMsg.vue'
+import store from '@/store'
 const routes: Array<RouteRecordRaw> = [
   {
     path: '',
@@ -9,23 +22,28 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/home',
-    name: 'HelloWorld',
-    component: HelloWorld,
+    name: 'home',
+    component: home,
   },
   {
-    path: '/aaa',
-    name: 'aaa',
-    component: () =>
-    import(/* webpackChunkName: "About" */ '../components/aaa.vue'),
+    path: '/myOrder',
+    name: 'myOrder',
+    component: myOrder,
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "About" */ '../components/About.vue'),
+    path: '/editMsg',
+    name: 'editMsg',
+    component: editMsg
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: login,
+  },
+  {
+    path: '/register',
+    name: 'register',
+    component: register,
   },
   {
     path: '/:currentPath(.*)*', // 路由未匹配到，进入这个
@@ -44,5 +62,19 @@ const router = createRouter({
       behavior: 'smooth',
     }
   },
+})
+//路由前置守卫
+router.beforeEach((to, from ,next) => {
+  if(to.path !== '/login' && to.path !== '/404' && to.path !== '/register') {
+    const token = getToken()
+    if(token === null || token === '') {
+      router.push("/login")
+      // next()
+    } else {
+      next()
+    }
+  } else {
+    next()
+  }
 })
 export default router

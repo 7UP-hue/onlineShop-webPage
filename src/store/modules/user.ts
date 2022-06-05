@@ -3,11 +3,11 @@
  * @Author: 刘晴
  * @Date: 2022-06-02 15:56:14
  * @LastEditors: 刘晴
- * @LastEditTime: 2022-06-03 22:18:36
+ * @LastEditTime: 2022-06-03 21:44:12
  */
-import Vuex from 'vuex'
+
+// 用户接口 暂时没有
 import { userLogin, userLogout, getUserInfo } from '@/api/user'
-import router from '@/router'
 // 存储cookie
 import { getToken, setToken, getRoles, setRoles, getName, setName, getAvatar, setAvatar } from '@/utils/cookies'
 import { ElMessage } from 'element-plus'
@@ -25,7 +25,8 @@ type loginData = {
   name: string,
   password: string
 };
-export default new Vuex.Store({
+export default {
+  namespace: true,
   state: {
     userInfo: {
       name: "",
@@ -51,18 +52,12 @@ export default new Vuex.Store({
         userLogin((data))
         .then((res: any) => {
           if(res.code === 200) {
-            console.log(res)
             commit('setUserInfo', {
               name: res.name,
               token: res.token,
               avatar: res.avatar,
               roles: res.roles
             })
-            ElMessage({
-              message: res.msg,
-              type: "success"
-            })
-            router.push('/home')
           }
           else {
             ElMessage({
@@ -103,4 +98,4 @@ export default new Vuex.Store({
       
     // }
   }
-})
+}
