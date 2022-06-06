@@ -3,7 +3,7 @@
  * @Author: 刘晴
  * @Date: 2022-05-31 13:40:47
  * @LastEditors: 刘晴
- * @LastEditTime: 2022-05-31 14:57:57
+ * @LastEditTime: 2022-06-05 19:26:25
 -->
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
@@ -29,7 +29,7 @@ const showDetail = (detailMsg: any) => {
   shopMsg.shopName = detailMsg.shopName
   shopMsg.price = detailMsg.price
   shopMsg.stock = 10000
-  shopMsg.imgSrc = detailMsg.imgSrc
+  shopMsg.imgSrc = detailMsg.imgUrl
 }
 const subCnt = () => {
   if(currentCnt.value) {

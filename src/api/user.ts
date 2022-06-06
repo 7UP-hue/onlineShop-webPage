@@ -3,7 +3,7 @@
  * @Author: 刘晴
  * @Date: 2022-06-02 11:36:41
  * @LastEditors: 刘晴
- * @LastEditTime: 2022-06-03 00:08:51
+ * @LastEditTime: 2022-06-05 21:55:49
  */
 import request from '@/utils/request'
 
@@ -20,17 +20,33 @@ export function userLogout() {
     url: '/login'
   })
 }
-export function getUserInfo(data: any) {
+
+export function getUserInfo() {
   return request({
-    method: 'post',
-    url: '/login',
-    data: data
+    method: 'get',
+    url: '/user/userMsg'
   })
 }
 export function userRegister(data: any) {
   return request({
     method: 'post',
     url: '/user/addUser',
+    data: data
+  })
+}
+
+export function saveShop(data: any) {
+  return request({
+    method: 'post',
+    url: '/shop/addShop',
+    data: data
+  })
+}
+
+export function editUser(data: any) {
+  return request({
+    method: 'post',
+    url: '/user/updateUser',
     data: data
   })
 }

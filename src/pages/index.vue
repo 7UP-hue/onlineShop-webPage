@@ -3,79 +3,59 @@
  * @Author: 刘晴
  * @Date: 2022-05-31 10:40:07
  * @LastEditors: 刘晴
- * @LastEditTime: 2022-05-31 21:59:47
+ * @LastEditTime: 2022-06-05 19:27:09
 -->
 <script setup lang="ts">
 import { Search } from '@element-plus/icons-vue'
-import { ref } from 'vue'
-const shopList = ref([
-  {
-    proName: 'AK skylan2022年新款夏季短款polo领无袖薄款条纹针织背心马甲女',
-    price: '89.00',
-    imgSrc: 'src/assets/shopImg1.webp',
-    shopName: 'widelia韩国女装',
-    sales: 125
-  },
-  {
-    proName: '芝士日【流光花园】法式复古宫廷风连衣裙白色方领重工2022年春夏',
-    price: '218.00',
-    imgSrc: 'src/assets/shopImg2.webp',
-    shopName: '安小落ANLUO',
-    sales: 125
-  },
-  {
-    proName: 'TODAYZZ 官方授权 时尚套装女水蓝花牛仔背带裙泡泡袖上衣两件套',
-    price: '549.00',
-    imgSrc: 'src/assets/shopImg3.webp',
-    shopName: 'Milka Studio 设计师品牌集成店',
-    sales: 125
-  },
-  {
-    proName: '「GUIER」系带短袖衬衫女设计感小众衬衣夏季新款法式别致上衣',
-    price: '119.00',
-    imgSrc: 'src/assets/shopImg4.webp',
-    shopName: 'GUIER 桂儿',
-    sales: 125
-  },
-  {
-    proName: 'AK skylan2022年新款夏季短款polo领无袖薄款条纹针织背心马甲女',
-    price: '89.00',
-    imgSrc: 'src/assets/shopImg1.webp',
-    shopName: 'widelia韩国女装',
-    sales: 125
-  },
-  {
-    proName: 'AK skylan2022年新款夏季短款polo领无袖薄款条纹针织背心马甲女',
-    price: '89.00',
-    imgSrc: 'src/assets/shopImg1.webp',
-    shopName: 'widelia韩国女装',
-    sales: 125
-  },
-  {
-    proName: 'AK skylan2022年新款夏季短款polo领无袖薄款条纹针织背心马甲女',
-    price: '89.00',
-    imgSrc: 'src/assets/shopImg1.webp',
-    shopName: 'widelia韩国女装',
-    sales: 125
-  },
-  {
-    proName: 'AK skylan2022年新款夏季短款polo领无袖薄款条纹针织背心马甲女',
-    price: '89.00',
-    imgSrc: 'src/assets/shopImg1.webp',
-    shopName: 'widelia韩国女装',
-    sales: 125
-  },
-  {
-    proName: 'AK skylan2022年新款夏季短款polo领无袖薄款条纹针织背心马甲女',
-    price: '89.00',
-    imgSrc: 'src/assets/shopImg1.webp',
-    shopName: 'widelia韩国女装',
-    sales: 125
-  },
-])
+import { onMounted, ref, reactive } from 'vue'
+import { getProduct } from '@/api/product'
+const shopList = reactive([])
 const detailMsgRef = ref()
 const isShow = (item: any) => {
   detailMsgRef.value.showDetail(item)
+}
+const currentPage = ref(1)
+const requset = reactive({
+  pageNum: 1,
+  pageSize: 12,
+  type: 'page',
+  proName: '',
+  shopName: ''
+})
+const isOver = ref(false)
+const getProList = () => {
+  requset.pageNum = currentPage.value
+  getProduct(requset).then((res: any) => {
+    if(res.code === 200) {
+      shopList.push(...res.rows)
+      loading.value = false
+      if(shopList.length>=res.total) isOver.value = true
+      else isOver.value = false
+    }
+  })
+}
+onMounted(()=> {
+  getProList()
+})
+const loadingMore = () => {
+  loading.value = true
+  currentPage.value = currentPage.value + 1
+  setTimeout(() => {
+    getProList()
+  },1000)
+}
+const selectType = ref('proName')
+const inputValue = ref('')
+const loading = ref(false)
+const searchPro = (value: any) => {
+  if(selectType.value === 'proName') {
+    requset.proName = value
+  } else {
+    requset.shopName = value
+  }
+  requset.pageNum = 1
+  shopList.length = 0
+  getProList()
 }
 </script>
 <template>
@@ -85,22 +65,22 @@ const isShow = (item: any) => {
       <div class="flex items-center">
         <div class="font-mono text-4xl bold text-yellow-500 w-212px">智慧商城</div>
         <el-input
+          v-model="inputValue"
           placeholder="请输入关键字"
           class="input-with-select"
+          @input="searchPro"
         >
           <template #prepend>
             <el-button :icon="Search" />
           </template>
           <template #append>
             <el-select
-              v-model="select"
-              placeholder="Select"
-              style="width: 115px; color: white"
-              class="text-white"
+              v-model="selectType"
+              placeholder="请选择查询方式"
+              style="width: 150px"
             >
-              <el-option label="Restaurant" value="1" />
-              <el-option label="Order No." value="2" />
-              <el-option label="Tel" value="3" />
+              <el-option label="根据商品名查询" value="proName" />
+              <el-option label="根据商铺名查询" value="shopName" />
             </el-select>
           </template>
         </el-input>
@@ -115,8 +95,8 @@ const isShow = (item: any) => {
             class="shopItems h-360px border border-hec-ccc mx-3 my-2 shadow-md shadow-gray-200 cursor-pointer pt-3"
           >
             <div>
-              <img :src="item.imgSrc" />
-              <div class="proName mt-1 text-hex-999 text-left">{{item.proName}}</div>
+              <img :src="item.imgUrl" />
+              <div class="proName mt-1 text-hex-999 text-left h-48px">{{item.proName}}</div>
               <div class="text-hex-FD3F31 text-18px mt-2 text-left">￥{{item.price}}</div>
               <div class="text-left mt-2 text-hex-999 text-13px flex items-center">
                 <el-icon class="mr-1" color="rgb(253,102,89)"><Shop /></el-icon>
@@ -128,6 +108,18 @@ const isShow = (item: any) => {
             </div>
           </el-col>
         </el-row>
+        <div
+          class="my-5 text-hex-999 cursor-pointer"
+          v-loading="loading"
+          @click="loadingMore"
+          v-if="!isOver"
+          >—— ——点击加载更多—— ——
+        </div>
+        <div
+          class="my-5 text-hex-999 cursor-pointer"
+          v-else
+          >—— ——没有更多了—— ——
+        </div>
       </div>
       <show-detail ref="detailMsgRef"></show-detail>
     </div>

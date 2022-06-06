@@ -3,9 +3,10 @@
  * @Author: 刘晴
  * @Date: 2022-05-31 10:34:09
  * @LastEditors: 刘晴
- * @LastEditTime: 2022-06-04 10:38:28
+ * @LastEditTime: 2022-06-05 16:52:25
  */
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
+import { ElMessage } from 'element-plus'
 import { getToken } from '@/utils/cookies'
 import home from '@/pages/index.vue'
 import login from '@/pages/login.vue'
@@ -17,7 +18,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '',
     redirect: (_) => {
-      return { path: '/home' }
+      return { path: '/login' }
     },
   },
   {
@@ -66,8 +67,13 @@ const router = createRouter({
 //路由前置守卫
 router.beforeEach((to, from ,next) => {
   if(to.path !== '/login' && to.path !== '/404' && to.path !== '/register') {
-    const token = getToken()
-    if(token === null || token === '') {
+    const token = String(getToken())
+    console.log(token)
+    if(token === null || token === '' || token === 'undefined') {
+      ElMessage({
+        message: '登录状态错误',
+        type: 'error'
+      })
       router.push("/login")
       // next()
     } else {

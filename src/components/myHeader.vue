@@ -3,7 +3,7 @@
  * @Author: 刘晴
  * @Date: 2022-05-31 21:50:10
  * @LastEditors: 刘晴
- * @LastEditTime: 2022-06-03 22:30:44
+ * @LastEditTime: 2022-06-05 21:15:13
 -->
 <script setup lang="ts">
 import { ref } from 'vue'
@@ -31,8 +31,12 @@ const isLogin = ref(true)
         <template #dropdown>
           <el-dropdown-menu>
             <el-dropdown-item @click="showShop">成立店铺</el-dropdown-item>
-            <el-dropdown-item>已卖出的宝贝</el-dropdown-item>
-            <el-dropdown-item>出售中的宝贝</el-dropdown-item>
+            <el-dropdown-item>
+              <el-link href="http://localhost:8088" target="_blank">已卖出的宝贝</el-link>
+            </el-dropdown-item>
+            <el-dropdown-item>
+              <el-link href="http://localhost:8088" target="_blank">出售出的宝贝</el-link>
+            </el-dropdown-item>
           </el-dropdown-menu>
         </template>
       </el-dropdown>

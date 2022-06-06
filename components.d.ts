@@ -18,6 +18,7 @@ declare module 'vue' {
     ElHeader: typeof import('element-plus/es')['ElHeader']
     ElIcon: typeof import('element-plus/es')['ElIcon']
     ElInput: typeof import('element-plus/es')['ElInput']
+    ElLink: typeof import('element-plus/es')['ElLink']
     ElOption: typeof import('element-plus/es')['ElOption']
     ElRadio: typeof import('element-plus/es')['ElRadio']
     ElRadioGroup: typeof import('element-plus/es')['ElRadioGroup']
@@ -27,6 +28,7 @@ declare module 'vue' {
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     JoinShop: typeof import('./src/components/joinShop.vue')['default']
+    Loading: typeof import('element-plus/es')['ElLoadingDirective']
     MyHeader: typeof import('./src/components/myHeader.vue')['default']
     ShowDetail: typeof import('./src/components/showDetail.vue')['default']
   }

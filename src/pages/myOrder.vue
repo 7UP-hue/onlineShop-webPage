@@ -3,7 +3,7 @@
  * @Author: 刘晴
  * @Date: 2022-05-30 11:15:44
  * @LastEditors: 刘晴
- * @LastEditTime: 2022-05-31 22:36:10
+ * @LastEditTime: 2022-06-05 20:38:31
 -->
 <script setup lang="ts">
 const tableData = [
@@ -50,7 +50,11 @@ const tableData = [
   <my-header></my-header>
   <div class="mt-4">
     <div class="p-3 mx-auto shadow-lg shadow-gray-300 border border-hex-eee min-h-80vh" style="width: 70%">
-      <el-form :inline="true">
+      <div class="h-45px border-b border-hex-ccc text-left flex items-center font-600 pl-3">
+        <el-icon class="mr-1"><CameraFilled /></el-icon>
+        订单列表
+      </div>
+      <el-form :inline="true" class="mt-5">
         <el-form-item>
           <el-input placeholder="请输入关键字" />
         </el-form-item>
