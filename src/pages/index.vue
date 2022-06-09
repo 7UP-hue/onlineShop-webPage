@@ -3,7 +3,7 @@
  * @Author: 刘晴
  * @Date: 2022-05-31 10:40:07
  * @LastEditors: 刘晴
- * @LastEditTime: 2022-06-05 19:27:09
+ * @LastEditTime: 2022-06-08 21:56:21
 -->
 <script setup lang="ts">
 import { Search } from '@element-plus/icons-vue'
@@ -60,8 +60,8 @@ const searchPro = (value: any) => {
 </script>
 <template>
   <my-header></my-header>
-  <div class="mt-4">
-    <div class="mx-auto" style="width: 70%">
+  <div>
+    <div class="mx-auto mt-4" style="width: 70%">
       <div class="flex items-center">
         <div class="font-mono text-4xl bold text-yellow-500 w-212px">智慧商城</div>
         <el-input

@@ -3,36 +3,43 @@
  * @Author: 刘晴
  * @Date: 2022-05-31 13:40:47
  * @LastEditors: 刘晴
- * @LastEditTime: 2022-06-05 19:26:25
+ * @LastEditTime: 2022-06-08 21:40:35
 -->
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
+import { buildOrder } from '@/api/order'
+import { ElMessage } from 'element-plus'
 interface ShopMsg{
   proName: String,
   shopName: String,
   price: Number,
   stock: Number,
-  imgSrc: String
+  imgSrc: String,
 }
 let shopMsg: ShopMsg = reactive({
   proName: '',
   shopName: '',
   price: 0,
   stock: 0,
-  imgSrc: ''
+  imgSrc: '',
 })
 const proSize = ref('small')
 const showDialog = ref(false)
+const request = reactive({
+  proId: '',
+  purchaseCnt: ''
+})
 const showDetail = (detailMsg: any) => {
   showDialog.value = true
   shopMsg.proName = detailMsg.proName
   shopMsg.shopName = detailMsg.shopName
   shopMsg.price = detailMsg.price
-  shopMsg.stock = 10000
+  shopMsg.stock = detailMsg.stock
   shopMsg.imgSrc = detailMsg.imgUrl
+  request.proId = detailMsg.proId
 }
 const subCnt = () => {
-  if(currentCnt.value) {
+  if(currentCnt.value>1) {
     currentCnt.value--
   }
 }
@@ -44,9 +51,26 @@ const addCnt = () => {
 const currentCnt = ref(1)
 defineExpose({showDetail})
 const onClose = () => {
-  console.log('关闭')
   currentCnt.value = 1
   proSize.value = 'small'
+}
+const onSubmit = () => {
+  request.purchaseCnt = String(currentCnt.value)
+  buildOrder(request).then((res: any) => {
+    if(res.code === 200) {
+      ElMessage({
+        message: '购买成功',
+        type: 'success'
+      })
+    } else {
+      ElMessage({
+        message: res.msg,
+        type: 'error'
+      })
+    }
+  }).finally(() => {
+    showDialog.value = false
+  })
 }
 </script>
 <template>
@@ -79,8 +103,8 @@ const onClose = () => {
         </el-radio-group>
       </div>
       <div class="my-2">合计：￥{{shopMsg.price*currentCnt}}</div>
-      <el-button>立即购买</el-button>
-      <el-button>取消</el-button>
+      <el-button @click="onSubmit()">立即购买</el-button>
+      <el-button @click="showDialog=false">取消</el-button>
     </div>
   </el-dialog>
 </template>
