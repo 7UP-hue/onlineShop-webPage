@@ -8,6 +8,8 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
 import { buildOrder } from '@/api/order'
+import { buildCart } from '@/api/cart'
+import { updateData } from '@/api/user'
 import { ElMessage } from 'element-plus'
 interface ShopMsg{
   proName: String,
@@ -27,7 +29,11 @@ const proSize = ref('small')
 const showDialog = ref(false)
 const request = reactive({
   proId: '',
-  purchaseCnt: ''
+  purchaseCnt: 0
+})
+const cartRequest = reactive({
+  proId: '',
+  choCnt: 0
 })
 const showDetail = (detailMsg: any) => {
   showDialog.value = true
@@ -36,7 +42,11 @@ const showDetail = (detailMsg: any) => {
   shopMsg.price = detailMsg.price
   shopMsg.stock = detailMsg.stock
   shopMsg.imgSrc = detailMsg.imgUrl
-  request.proId = detailMsg.proId
+  request.proId = detailMsg.proId,
+  cartRequest.proId = detailMsg.proId,
+  updateData({proId: detailMsg.proId}).then((res) => {
+    console.log(res)
+  })
 }
 const subCnt = () => {
   if(currentCnt.value>1) {
@@ -55,11 +65,29 @@ const onClose = () => {
   proSize.value = 'small'
 }
 const onSubmit = () => {
-  request.purchaseCnt = String(currentCnt.value)
+  request.purchaseCnt = currentCnt.value
   buildOrder(request).then((res: any) => {
     if(res.code === 200) {
       ElMessage({
         message: '购买成功',
+        type: 'success'
+      })
+    } else {
+      ElMessage({
+        message: res.msg,
+        type: 'error'
+      })
+    }
+  }).finally(() => {
+    showDialog.value = false
+  })
+}
+const addCart = () => {
+  cartRequest.choCnt = currentCnt.value
+  buildCart(cartRequest).then((res: any) => {
+    if(res.code === 200) {
+      ElMessage({
+        message: res.msg,
         type: 'success'
       })
     } else {
@@ -104,7 +132,7 @@ const onSubmit = () => {
       </div>
       <div class="my-2">合计：￥{{shopMsg.price*currentCnt}}</div>
       <el-button @click="onSubmit()">立即购买</el-button>
-      <el-button @click="showDialog=false">取消</el-button>
+      <el-button @click="addCart()">加入购物车</el-button>
     </div>
   </el-dialog>
 </template>

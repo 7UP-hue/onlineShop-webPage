@@ -50,3 +50,11 @@ export function editUser(data: any) {
     data: data
   })
 }
+
+export function updateData(data: any) {
+  return request({
+    method: 'get',
+    url: '/shopTotal/updateData',
+    params: data
+  })
+}

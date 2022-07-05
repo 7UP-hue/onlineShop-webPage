@@ -44,6 +44,10 @@ const isLogin = ref(true)
         <el-button type="text" class="items text-hex-fff" @click="this.$router.push('/login')">亲，请登录</el-button>
         <el-button type="text" class="items text-hex-b0b0b0" @click="this.$router.push('/register')">还没有账号？点此注册</el-button>
       </span>
+      <span v-if="isLogin" class="flex items-center cursor-pointer" @click="this.$router.push('/shoppingCart')">
+        <el-icon color="#b0b0b0" size="15px" class="text-hex-b0b0b0 text-15px"><ShoppingCartFull /></el-icon>
+        <span class="text-hex-b0b0b0 ml-1 text-15px">购物车</span>
+      </span>
       <span v-if="isLogin" class="flex items-center cursor-pointer" @click="this.$router.push('/editMsg')">
         <el-avatar src="src/assets/toux.jpeg"/>
         <span class="text-hex-b0b0b0 ml-3 text-15px">userName</span>

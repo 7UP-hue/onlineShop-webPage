@@ -14,6 +14,7 @@ import register from '@/pages/register.vue'
 import myOrder from '@/pages/myOrder.vue'
 import editMsg from '@/pages/editMsg.vue'
 import store from '@/store'
+import shoppingCart from '@/pages/shoppingCart.vue'
 const routes: Array<RouteRecordRaw> = [
   {
     path: '',
@@ -45,6 +46,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/register',
     name: 'register',
     component: register,
+  },
+  {
+    path: '/shoppingCart',
+    name: 'shoppingCart',
+    component: shoppingCart
   },
   {
     path: '/:currentPath(.*)*', // 路由未匹配到，进入这个
