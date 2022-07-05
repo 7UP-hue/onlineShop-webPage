@@ -31,3 +31,12 @@ export function updateOrder(data: any) {
     data: data
   })
 }
+
+//一次购买多个商品
+export function buildAllOrder(data: any) {
+  return request({
+    url: 'order/addAllOrder',
+    method: 'post',
+    data: data
+  })
+}
